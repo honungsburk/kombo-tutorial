@@ -2,7 +2,7 @@
  * Exercises you should complete!
  *
  */
-export * as Exercise from "./exercise.js";
+export * as Exercise from "./exercise2.js";
 
 /**
  * Contains the JSON type.

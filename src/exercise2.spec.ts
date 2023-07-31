@@ -1,51 +1,16 @@
 import { test, Group } from "@japa/runner";
-import * as Core from "./exercise.js";
-import { Parser } from "@honungsburk/kombo/Parser";
-import * as Kombo from "@honungsburk/kombo";
-import * as Result from "@honungsburk/kombo/Result";
-import { Expect } from "@japa/expect";
-import fs from "fs";
+import * as exercise from "./exercise2.js";
+import { testFailSimpleBuilder, testSuccessBuilder } from "./specHelpers.js";
 
 // Helper functions for testing parsers.
-
-const testSuccessBuilder =
-  <A, CTX, PROBELM>(parser: Parser<A, CTX, PROBELM>) =>
-  (description: string, input: string, expected: A) => {
-    return test(description, ({ expect }) => {
-      const result = parser.run(input);
-      expect(result.value).toStrictEqual(expected);
-    });
-  };
-
-const testFailSimpleBuilder =
-  <A, CTX, PROBELM>(parser: Parser<A, CTX, PROBELM>) =>
-  (description: string, input: string) => {
-    return test(description, ({ expect }) => {
-      const result = parser.run(input);
-      expect(result.kind).toEqual("Err");
-    });
-  };
-
-function expectProblem<A, CTX>(
-  expect: Expect,
-  result: Result.Result<any, Kombo.Parser.DeadEnd<CTX, A>[]>,
-  toBe: A[]
-): void {
-  expect(Result.isErr(result)).toBeTruthy();
-  if (Result.isErr(result)) {
-    expect(result.value.map((d) => d.problem)).toStrictEqual(toBe);
-  }
-}
 
 // Tests for the core JSON parsers.
 
 // Whitespace
 
 const testWhitespaceSuccess = testSuccessBuilder(
-  Core.whitespaceParser.getChompedString()
+  exercise.whitespaceParser.getChompedString()
 );
-const testWhitespaceFail = testFailSimpleBuilder(Core.whitespaceParser);
-
 test.group("whitespaceParser", (group: Group) => {
   testWhitespaceSuccess("parses empty string", "", "");
   testWhitespaceSuccess("parses space", " ", " ");
@@ -62,8 +27,8 @@ test.group("whitespaceParser", (group: Group) => {
 
 // Null
 
-const testNullSuccess = testSuccessBuilder(Core.nullParser);
-const testNullFail = testFailSimpleBuilder(Core.nullParser);
+const testNullSuccess = testSuccessBuilder(exercise.nullParser);
+const testNullFail = testFailSimpleBuilder(exercise.nullParser);
 
 test.group("nullParser", (group: Group) => {
   testNullSuccess("parses null", "null", null);
@@ -73,8 +38,8 @@ test.group("nullParser", (group: Group) => {
 
 // Bool
 
-const testBoolSuccess = testSuccessBuilder(Core.boolParser);
-const testBoolFail = testFailSimpleBuilder(Core.boolParser);
+const testBoolSuccess = testSuccessBuilder(exercise.boolParser);
+const testBoolFail = testFailSimpleBuilder(exercise.boolParser);
 
 test.group("boolParser", (group: Group) => {
   testBoolSuccess("parses true", "true", true);
@@ -91,14 +56,14 @@ const testNumberSuccess = (
   expected: number
 ) => {
   return test(description, ({ expect }) => {
-    const result = Core.numberParser.run(input);
+    const result = exercise.numberParser.run(input);
     const epsilon = expected / 10;
     expect(result.value).toBeGreaterThanOrEqual(expected - epsilon);
     expect(result.value).toBeLessThanOrEqual(expected + epsilon);
   });
 };
 
-const testNumberFail = testFailSimpleBuilder(Core.numberParser);
+const testNumberFail = testFailSimpleBuilder(exercise.numberParser);
 
 test.group("numberParser", (group: Group) => {
   testNumberSuccess("parses 1", "1", 1);
@@ -123,7 +88,7 @@ test.group("numberParser", (group: Group) => {
 
 // Unicode
 
-const testUnicodeSuccess = testSuccessBuilder(Core.unicodeParser);
+const testUnicodeSuccess = testSuccessBuilder(exercise.unicodeParser);
 
 test.group("unicodeParser", (group: Group) => {
   testUnicodeSuccess("parses 'u8000'", "u8000", "耀");
@@ -131,8 +96,8 @@ test.group("unicodeParser", (group: Group) => {
 
 // Escape
 
-const testEscapeSuccess = testSuccessBuilder(Core.escapeParser);
-const testEscapeFail = testFailSimpleBuilder(Core.escapeParser);
+const testEscapeSuccess = testSuccessBuilder(exercise.escapeParser);
+const testEscapeFail = testFailSimpleBuilder(exercise.escapeParser);
 
 test.group("escapeParser", (group: Group) => {
   testEscapeSuccess("parses quote", '\\"', '"');
@@ -150,8 +115,8 @@ test.group("escapeParser", (group: Group) => {
 
 // String
 
-const testStringSuccess = testSuccessBuilder(Core.stringParser);
-const testStringFail = testFailSimpleBuilder(Core.stringParser);
+const testStringSuccess = testSuccessBuilder(exercise.stringParser);
+const testStringFail = testFailSimpleBuilder(exercise.stringParser);
 
 test.group("stringParser", (group: Group) => {
   testStringSuccess('parses ""', '""', "");
@@ -179,8 +144,8 @@ test.group("stringParser", (group: Group) => {
 
 // Array
 
-const testArraySuccess = testSuccessBuilder(Core.arrayParser);
-const testArrayFail = testFailSimpleBuilder(Core.arrayParser);
+const testArraySuccess = testSuccessBuilder(exercise.arrayParser);
+const testArrayFail = testFailSimpleBuilder(exercise.arrayParser);
 
 test.group("arrayParser", (group: Group) => {
   testArraySuccess("parses empty array", "[]", []);
@@ -209,8 +174,8 @@ test.group("arrayParser", (group: Group) => {
 
 // Object
 
-const testObjectSuccess = testSuccessBuilder(Core.objectParser);
-const testObjectFail = testFailSimpleBuilder(Core.objectParser);
+const testObjectSuccess = testSuccessBuilder(exercise.objectParser);
+const testObjectFail = testFailSimpleBuilder(exercise.objectParser);
 
 test.group("objectParser", (group: Group) => {
   testObjectSuccess("parses empty object", "{}", {});

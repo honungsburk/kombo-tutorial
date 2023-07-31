@@ -1,6 +1,6 @@
-# Kombo-Tutorial
+# Kombo Workshop
 
-Hello and welcome to the tutorial for [Kombo](https://github.com/honungsburk/kombo), a parser combinator library for Typescript.
+Hello and welcome to the workshop for [Kombo](https://github.com/honungsburk/kombo), a parser combinator library for Typescript.
 
 ## Links
 

@@ -5,8 +5,8 @@ import { testFailSimpleBuilder, testSuccessBuilder } from "./specHelpers.js";
 // Helper to add common taggs to all tests in a group.
 function group(name: string, fn: (group: Group) => void) {
   return test.group(name, (group: Group) => {
-    group.tests.forEach((t) => t.tags(["example", "color"], "append"));
     fn(group);
+    group.tests.forEach((t) => t.tags(["ex1"], "append"));
   });
 }
 

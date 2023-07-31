@@ -14,6 +14,11 @@ npm is also required, but it is included with node.
 - [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 - [Node.js](https://nodejs.org/en/) (v16 or later)
 
+## Setup
+
+Run `npm install` and test that `npm run test` works. If they don't work ask your
+instructor.
+
 ## Introduction
 
 What are parser combinators? They are a way to build parsers by combining smaller parsers.
@@ -23,15 +28,23 @@ the parsed input. A parser combinator is a function that takes one or more parse
 and returns a new parser as output. This new parser can then either be used on its own
 or combined with other parsers to create even more complex parsers.
 
-## Examples
+## Exercises
 
-## Instructions
+Go into the file `src/exercise1.ts` it will guide you through writing your first
+parser! Use the command `npm run test-ex1` to run the tests for the first exercise.
+When all tests are green your done.
 
-### Setup
+When you are done and feel a bit confident why not challenge yourself? In the
+file `src/exercise2.ts` you'll hopefully find a worthy challenge!
+Use the command `npm run test-ex2` to run the tests for the first exercise.
 
-### Exercise
+### Tips and Tricks
 
-The `src/exercise.ts` file contains stubbed functions that together make a JSON parser.
-The `src/exercise.spec.ts` file contains tests that will verify your implementation.
-You can run the tests with `npm run test`. You should not download any dependencies, beyond
-what is already in the `package.json` file.
+- If you want more control over what tests run you can use `npm run test -- --help`
+  to get all available options. Don't forget to add the `--` before your command line arguments.
+- [Kombo Docs](https://frankhampusweslien.com/kombo/index.html)
+
+### Rules
+
+- You should not download any dependencies, beyond what is already in the `package.json` file.
+- No more rules!

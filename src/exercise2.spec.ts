@@ -4,6 +4,14 @@ import { testFailSimpleBuilder, testSuccessBuilder } from "./specHelpers.js";
 
 // Helper functions for testing parsers.
 
+// Helper to add common taggs to all tests in a group.
+function group(name: string, fn: (group: Group) => void) {
+  return test.group(name, (group: Group) => {
+    fn(group);
+    group.tests.forEach((t) => t.tags(["ex2"], "append"));
+  });
+}
+
 // Tests for the core JSON parsers.
 
 // Whitespace
@@ -11,7 +19,7 @@ import { testFailSimpleBuilder, testSuccessBuilder } from "./specHelpers.js";
 const testWhitespaceSuccess = testSuccessBuilder(
   exercise.whitespaceParser.getChompedString()
 );
-test.group("whitespaceParser", (group: Group) => {
+group("whitespaceParser", (group: Group) => {
   testWhitespaceSuccess("parses empty string", "", "");
   testWhitespaceSuccess("parses space", " ", " ");
   testWhitespaceSuccess("parses newline", "\n", "\n");
@@ -30,7 +38,7 @@ test.group("whitespaceParser", (group: Group) => {
 const testNullSuccess = testSuccessBuilder(exercise.nullParser);
 const testNullFail = testFailSimpleBuilder(exercise.nullParser);
 
-test.group("nullParser", (group: Group) => {
+group("nullParser", (group: Group) => {
   testNullSuccess("parses null", "null", null);
   testNullFail("fails on leading space", " null");
   testNullFail("fail on gibberish", "asdq32er");
@@ -41,7 +49,7 @@ test.group("nullParser", (group: Group) => {
 const testBoolSuccess = testSuccessBuilder(exercise.boolParser);
 const testBoolFail = testFailSimpleBuilder(exercise.boolParser);
 
-test.group("boolParser", (group: Group) => {
+group("boolParser", (group: Group) => {
   testBoolSuccess("parses true", "true", true);
   testBoolSuccess("parses false", "false", false);
   testBoolFail("fails on leading space", " false");
@@ -65,7 +73,7 @@ const testNumberSuccess = (
 
 const testNumberFail = testFailSimpleBuilder(exercise.numberParser);
 
-test.group("numberParser", (group: Group) => {
+group("numberParser", (group: Group) => {
   testNumberSuccess("parses 1", "1", 1);
   testNumberSuccess("parses 13213", "13213", 13213);
   testNumberSuccess("parses -0", "-0", -0);
@@ -90,7 +98,7 @@ test.group("numberParser", (group: Group) => {
 
 const testUnicodeSuccess = testSuccessBuilder(exercise.unicodeParser);
 
-test.group("unicodeParser", (group: Group) => {
+group("unicodeParser", (group: Group) => {
   testUnicodeSuccess("parses 'u8000'", "u8000", "耀");
 });
 
@@ -99,7 +107,7 @@ test.group("unicodeParser", (group: Group) => {
 const testEscapeSuccess = testSuccessBuilder(exercise.escapeParser);
 const testEscapeFail = testFailSimpleBuilder(exercise.escapeParser);
 
-test.group("escapeParser", (group: Group) => {
+group("escapeParser", (group: Group) => {
   testEscapeSuccess("parses quote", '\\"', '"');
   testEscapeSuccess("parses backslash", "\\\\", "\\");
   testEscapeSuccess("parses solidus", "\\/", "/");
@@ -118,7 +126,7 @@ test.group("escapeParser", (group: Group) => {
 const testStringSuccess = testSuccessBuilder(exercise.stringParser);
 const testStringFail = testFailSimpleBuilder(exercise.stringParser);
 
-test.group("stringParser", (group: Group) => {
+group("stringParser", (group: Group) => {
   testStringSuccess('parses ""', '""', "");
   testStringSuccess('parses "1"', '"1"', "1");
   testStringSuccess('parses "1.23123"', '"1.23123"', "1.23123");
@@ -147,7 +155,7 @@ test.group("stringParser", (group: Group) => {
 const testArraySuccess = testSuccessBuilder(exercise.arrayParser);
 const testArrayFail = testFailSimpleBuilder(exercise.arrayParser);
 
-test.group("arrayParser", (group: Group) => {
+group("arrayParser", (group: Group) => {
   testArraySuccess("parses empty array", "[]", []);
   testArraySuccess("parses array with one element", "[1]", [1]);
   testArraySuccess("parses array with multiple elements", "[1,2,3]", [1, 2, 3]);
@@ -177,7 +185,7 @@ test.group("arrayParser", (group: Group) => {
 const testObjectSuccess = testSuccessBuilder(exercise.objectParser);
 const testObjectFail = testFailSimpleBuilder(exercise.objectParser);
 
-test.group("objectParser", (group: Group) => {
+group("objectParser", (group: Group) => {
   testObjectSuccess("parses empty object", "{}", {});
   testObjectSuccess("parses object with one key", '{"a":1}', { a: 1 });
   testObjectSuccess("parses object with multiple keys", '{"a":1,"b":2,"c":3}', {

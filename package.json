@@ -29,7 +29,8 @@
     "parser combinators",
     "typescript",
     "kombo",
-    "tutorial"
+    "tutorial",
+    "workshop"
   ],
   "devDependencies": {
     "@japa/expect": "^2.0.1",

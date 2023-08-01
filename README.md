@@ -28,6 +28,69 @@ the parsed input. A parser combinator is a function that takes one or more parse
 and returns a new parser as output. This new parser can then either be used on its own
 or combined with other parsers to create even more complex parsers.
 
+## How it works
+
+> The type signatures in this section are simplified for clarity.
+
+At the core of a parser combinator library are a couple of types:
+
+```ts
+/**
+ * A parser is a function that takes the current state and performs a step.
+ * A step can either be Good or Bad.
+ */
+type Parser<A, PROBLEM> = (s: State) => PStep<A, PROBLEM>;
+
+/**
+ * The state is the current state of the parser. It contains the source string,
+ * offest, indent, row and column. It tells the parser where it is.
+ *
+ * Important: The offset is in BYTES because some UTF-16 characters are TWO bytes such as
+ * emojis.
+ */
+type State = {
+  src: string;
+  offset: number; //in BYTES (some UTF-16 characters are TWO bytes)
+  indent: number; // starts from 0
+  row: number; //in newlines
+  col: number; //in UTF-16 characters
+};
+
+/**
+ * A step is the result of a parser. It can either be Good or Bad.
+ */
+type PStep<A, PROBLEM> = Good<A> | Bad<PROBLEM>;
+
+/**
+ * If a step is Good it means the parser succeeded and returned a value.
+ * It contains the new state of the parser, and whether or not the parser
+ * is allowed to backtrack.
+ *
+ * Backtraking means that if the parser fails, it can try another path. You
+ * can read more [here](https://github.com/honungsburk/kombo/blob/master/semantics.md).
+ *
+ */
+type Good<A> = {
+  readonly kind: "Good";
+  readonly haveConsumed: boolean; // if true, backtracking is not allowed
+  readonly value: A;
+  readonly state: State;
+};
+
+/**
+ * If a step is Bad it means the parser failed. It contains the new state of the parser,
+ * and a problem that describes what went wrong.
+ *
+ * The bag is a data structure that contains all the problems that happened during the
+ * parsing and what order. It is used to generate error messages.
+ */
+export type Bad<PROBLEM> = {
+  readonly kind: "Bad";
+  readonly haveConsumed: boolean; // if true, backtracking is not allowed
+  readonly bag: Bag<PROBLEM>;
+};
+```
+
 ## Exercises
 
 Go into the file `src/exercise1.ts` it will guide you through writing your first

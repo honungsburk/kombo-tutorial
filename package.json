@@ -21,8 +21,8 @@
   "type": "module",
   "scripts": {
     "test": "ts-node-esm bin/Test.ts",
-    "test-ex1": "ts-node-esm bin/Test.ts -- --groups hexDigitParser",
-    "test-ex2": "ts-node-esm bin/Test.ts -- --tags ex2"
+    "test-ex1": "ts-node-esm bin/Test.ts --groups rgbColorParser",
+    "test-ex2": "ts-node-esm bin/Test.ts --tags ex2"
   },
   "keywords": [
     "parser",

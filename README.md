@@ -3,7 +3,7 @@
 Hello and welcome to the workshop for [Kombo](https://github.com/honungsburk/kombo),
 a parser combinator library for Typescript.
 The goal of this workshop is for you to learn what parser combinators are, get a
-feel for how it is implemented, and get to use them by implementing a JSON parser.
+feel for how it is implemented, and get to use them by implementing your own parser(s).
 
 ## Prerequisites
 
@@ -28,7 +28,14 @@ the parsed input. A parser combinator is a function that takes one or more parse
 and returns a new parser as output. This new parser can then either be used on its own
 or combined with other parsers to create even more complex parsers.
 
-## How it works
+### String in Javascript
+
+What do you think the length of this string is? `🤔`. If you guessed 1 you are wrong.
+It is 2. This is because the length of a string is the number of code units in the string, not the number of characters.
+Luckily [Kombo](https://github.com/honungsburk/kombo) keeps track of that for you and makes all the necessary bookkeeping
+so that you can focus on writing clean code.
+
+### How it works
 
 > The type signatures in this section are simplified for clarity.
 

@@ -1,7 +1,7 @@
 {
   "name": "@honungsburk/kombo-tutorial",
   "version": "1.0.0",
-  "description": "A tutorial on how to write a JSON parser using Kombo",
+  "description": "A tutorial on how to write parsers using Kombo",
   "author": "Frank Hampus Weslien (https://honungsburk.github.io/)",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/honungsburk/kombo-json",
@@ -42,6 +42,6 @@
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "dependencies": {
-    "@honungsburk/kombo": "^2.1.0"
+    "@honungsburk/kombo": "^3.0.0"
   }
 }

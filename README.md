@@ -50,17 +50,17 @@ type Parser<A, PROBLEM> = (s: State) => PStep<A, PROBLEM>;
 
 /**
  * The state is the current state of the parser. It contains the source string,
- * offest, indent, row and column. It tells the parser where it is.
+ * offset, indent, row, and column. It tells the parser where it is.
  *
- * Important: The offset is in BYTES because some UTF-16 characters are TWO bytes such as
+ * Important: The offset is in code points because some UTF-16 characters are TWO code points such as
  * emojis.
  */
 type State = {
   src: string;
-  offset: number; //in BYTES (some UTF-16 characters are TWO bytes)
+  offset: number; //in code points (some UTF-16 characters are TWO code points)
   indent: number; // starts from 0
   row: number; //in newlines
-  col: number; //in UTF-16 characters
+  col: number; //in characters
 };
 
 /**
@@ -73,7 +73,7 @@ type PStep<A, PROBLEM> = Good<A> | Bad<PROBLEM>;
  * It contains the new state of the parser, and whether or not the parser
  * is allowed to backtrack.
  *
- * Backtraking means that if the parser fails, it can try another path. You
+ * Backtracking means that if the parser fails, it can try another path. You
  * can read more [here](https://github.com/honungsburk/kombo/blob/master/semantics.md).
  *
  */
@@ -88,8 +88,8 @@ type Good<A> = {
  * If a step is Bad it means the parser failed. It contains the new state of the parser,
  * and a problem that describes what went wrong.
  *
- * The bag is a data structure that contains all the problems that happened during the
- * parsing and what order. It is used to generate error messages.
+ * The bag is a data structure containing all the problems during the
+ * parsing and in what order they occured. It is used to generate error messages.
  */
 export type Bad<PROBLEM> = {
   readonly kind: "Bad";
